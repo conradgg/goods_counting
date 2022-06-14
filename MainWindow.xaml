@@ -15,7 +15,8 @@
             <StackPanel>
                 <Grid>
                     <TextBlock Text="Личный кабинет" FontSize="30" FontWeight="Medium"/>
-                    <Button Name="logout" Content="Выход" HorizontalAlignment="Right" Click="logout_Click" Style="{StaticResource MaterialDesignFlatDarkBgButton}"/>
+                    <Button Name="adminDashboard" Content="Администрирование" HorizontalAlignment="Right" Click="adminDashboard_Click" Margin="0 0 100 0" Visibility="Hidden"/>
+                    <Button Name="logout" Content="Выход" HorizontalAlignment="Right" Click="logout_Click" Style="{StaticResource MaterialDesignFlatButton}"/>
                 </Grid>
                 <Label Name="userName" Content="Имя пользователя: "  Margin="0 0 0 30"/>
 

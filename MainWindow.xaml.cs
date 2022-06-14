@@ -23,5 +23,10 @@ namespace goods_counting
             authWindow.Show();
             Close();
         }
+
+        private void adminDashboard_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
