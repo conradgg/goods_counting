@@ -27,15 +27,14 @@ namespace goods_counting
                 MessageBox.Show("Необходимо заполнить все поля");
             else
             {
-                if (Authorize(login, encryption.Encrypt(password)))
+                password = encryption.Encrypt(password);
+                if (Authorize(login, password))
                 {
                     Properties.Settings.Default.rememberUser = login;
+                    Properties.Settings.Default.rememberPassword = password;
 
                     if (rememberPasswd.IsChecked == true)
-                    {
                         Properties.Settings.Default.rememberAuth = true;
-                        Properties.Settings.Default.rememberPassword = password;
-                    }
 
                     Properties.Settings.Default.Save();
 
