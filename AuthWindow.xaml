@@ -1,0 +1,25 @@
+﻿<Window x:Class="goods_counting.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:goods_counting"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Учёт товаров" Height="500" MinHeight="500" Width="450" MinWidth="450" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
+        <Border MinWidth="350" Margin="30" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="600" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="25" Color="#FFEDEDED" ShadowDepth="0" />
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock Text="Авторизация" FontSize="30" FontWeight="Medium" Margin="0 0 0 30" />
+                <TextBox Name="user" materialDesign:HintAssist.Hint="Введите логин" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <PasswordBox Name="passwd" materialDesign:HintAssist.Hint="Введите пароль" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
+                <CheckBox Name="rememberPasswd" Content="Запомнить пароль" Margin="0 0 0 10" Cursor="Hand" HorizontalAlignment="Left"/>
+                <Button Name="authorize" Content="Войти" Margin="0 0 0 2" Cursor="Hand" Click="authorize_Click" IsDefault="True" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Label Name="register" Content="Регистрация" Cursor="Hand" HorizontalAlignment="Center" MouseLeftButtonDown="register_MouseLeftButtonDown" FontSize="11" FontStyle="Italic"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
