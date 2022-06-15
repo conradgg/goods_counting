@@ -16,13 +16,12 @@
                 <Grid>
                     <TextBlock Text="Личный кабинет" FontSize="30" FontWeight="Medium"/>
                     <Button Name="adminDashboard" Content="Администрирование" HorizontalAlignment="Right" Click="adminDashboard_Click" Margin="0 0 100 0" Visibility="Hidden"/>
-                    <Button Name="logout" Content="Выход" HorizontalAlignment="Right" Click="logout_Click" Style="{StaticResource MaterialDesignFlatButton}"/>
+                    <Button Name="logout" Content="Выход" HorizontalAlignment="Right" Click="logout_Click" Style="{StaticResource MaterialDesignOutlinedButton}"/>
                 </Grid>
                 <Label Name="userName" Content="Имя пользователя: "  Margin="0 0 0 30"/>
-
-                <CheckBox Name="rememberPasswd" Content="Запомнить пароль" Margin="0 0 0 10" Cursor="Hand" HorizontalAlignment="Left"/>
-                <Button Name="authorize" Content="Войти" Margin="0 0 0 2" Cursor="Hand"  Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
-                <Label Name="register" Content="Регистрация" Cursor="Hand" HorizontalAlignment="Center" FontSize="11" FontStyle="Italic"/>
+                <Button Name="sellerMode"  Content="Режим продавца" Margin="40 0 40 0" Click="sellerMode_Click"  Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="viewMode" Content="Режим просмотра товаров" Margin="40 20 40 0" Click="viewMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="recordMode" Content="Режим записи товаров" Margin="40 20 40 0" Click="recordMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
             </StackPanel>
         </Border>
     </Grid> 

@@ -57,5 +57,20 @@ namespace goods_counting
         {
             MessageBox.Show("Good!");
         }
+
+        private void recordMode_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void viewMode_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void sellerMode_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
