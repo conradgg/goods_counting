@@ -23,8 +23,8 @@
                     <Button Name="search" Content="Найти" HorizontalAlignment="Left" Margin="350 0 0 0" Click="search_Click" IsDefault="True" Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
                 </Grid>
                 <DataGrid  Name="usersDG" MaxHeight="200" />
-                <Button Name="saveChanges" Content="Сохранить" Margin="40 30 40 0" Click="saveChanges_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
-                <Button Name="remove" Content="Удалить"  Margin="40 20 40 0" Click="remove_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="saveChanges" Content="Сохранить запись" Margin="40 30 40 0" Click="saveChanges_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
+                <Button Name="remove" Content="Удалить запись"  Margin="40 20 40 0" Click="remove_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
             </StackPanel>
         </Border>
     </Grid>
