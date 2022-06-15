@@ -39,7 +39,7 @@ namespace goods_counting
 
             DB db = new DB();
 
-            MySqlCommand command = new MySqlCommand("INSERT INTO `users` (user, password, role) values (@uL, @uP, 'defaultUser')", db.getConnection());
+            MySqlCommand command = new MySqlCommand("INSERT INTO `users` (user, password, role) values (@uL, @uP, 'user')", db.getConnection());
             command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = login;
             command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = encryption.Encrypt(password);
 

@@ -60,7 +60,9 @@ namespace goods_counting
 
         private void adminDashboard_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Good!");
+            AdminDashboard adminDash = new AdminDashboard();
+            adminDash.Show();
+            Close();
         }
 
         private void recordMode_Click(object sender, RoutedEventArgs e)

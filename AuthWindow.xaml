@@ -14,7 +14,7 @@
             </Border.Effect>
             <StackPanel>
                 <TextBlock Text="Авторизация" FontSize="30" FontWeight="Medium" Margin="0 0 0 30" />
-                <TextBox Name="user" materialDesign:HintAssist.Hint="Введите логин" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox Name="user" materialDesign:HintAssist.Hint="Введите логин" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow"/>
                 <PasswordBox Name="passwd" materialDesign:HintAssist.Hint="Введите пароль" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
                 <CheckBox Name="rememberPasswd" Content="Запомнить пароль" Margin="0 0 0 10" Cursor="Hand" HorizontalAlignment="Left"/>
                 <Button Name="authorize" Content="Войти" Margin="0 0 0 2" Cursor="Hand" Click="authorize_Click" IsDefault="True" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>

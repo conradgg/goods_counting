@@ -1,0 +1,31 @@
+﻿<Window x:Class="goods_counting.Users"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:goods_counting"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Учёт товаров" Height="650" MinHeight="650" Width="700" MinWidth="700" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
+        <Border MinWidth="500" Margin="30" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="900" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="25" Color="#FFEDEDED" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel>
+                <Grid Margin="0 0 0 30">
+                    <TextBlock Text="Пользователи" FontSize="30" FontWeight="Medium"/>
+                    <Button Name="Back" Content="Назад" HorizontalAlignment="Right" Click="Back_Click" Style="{StaticResource MaterialDesignOutlinedButton}"/>
+                </Grid>
+                <Grid>
+                    <TextBox Name="user" materialDesign:HintAssist.Hint="Пользователь" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" Width="150" />
+                    <TextBox Name="role" Margin="170 0 0 10" HorizontalAlignment="Left" Width="150" materialDesign:HintAssist.Hint="Роль" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <Button Name="search" Content="Найти" HorizontalAlignment="Left" Margin="350 0 0 0" Click="search_Click" IsDefault="True" Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
+                </Grid>
+                <DataGrid  Name="usersDG" MaxHeight="200" />
+                <Button Name="saveChanges" Content="Сохранить" Margin="40 30 40 0" Click="saveChanges_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="remove" Content="Удалить"  Margin="40 20 40 0" Click="remove_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
