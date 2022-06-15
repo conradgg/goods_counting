@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:goods_counting"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Учёт товаров" Height="600" MinHeight="600" Width="700" MinWidth="700" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
+        Title="Учёт товаров" Height="400" MinHeight="400" Width="700" MinWidth="700" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
     <Grid Background="{DynamicResource MaterialDesignPaper}">
         <Border MinWidth="500" Margin="30" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="900" CornerRadius="20">
             <Border.Effect>
@@ -19,9 +19,9 @@
                     <Button Name="logout" Content="Выход" HorizontalAlignment="Right" Click="logout_Click" Style="{StaticResource MaterialDesignOutlinedButton}"/>
                 </Grid>
                 <Label Name="userName" Content="Имя пользователя: "  Margin="0 0 0 30"/>
-                <Button Name="sellerMode"  Content="Режим продавца" Margin="40 0 40 0" Click="sellerMode_Click"  Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
-                <Button Name="viewMode" Content="Режим просмотра товаров" Margin="40 20 40 0" Click="viewMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
-                <Button Name="recordMode" Content="Режим записи товаров" Margin="40 20 40 0" Click="recordMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="sellerMode"  Content="Режим продавца" Margin="40 0 40 0" Visibility="Hidden" Click="sellerMode_Click"  Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="viewMode" Content="Режим просмотра товаров" Margin="40 20 40 0" Visibility="Hidden" Click="viewMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="recordMode" Content="Режим записи товаров" Margin="40 20 40 0" Visibility="Hidden" Click="recordMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
             </StackPanel>
         </Border>
     </Grid> 

@@ -14,32 +14,37 @@ namespace goods_counting
         {
             InitializeComponent();
             userName.Content += Properties.Settings.Default.rememberUser;
-
-            if (adminAccess())
-                adminDashboard.Visibility = Visibility.Visible;
+            Access();
         }
 
-        private bool adminAccess()
+        private void Access()
         {
-            bool check = false;
             DB db = new DB();
 
             DataTable table = new DataTable();
 
             MySqlDataAdapter adapter = new MySqlDataAdapter();
 
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE `user` = @uL AND `password` = @uP", db.getConnection());
+            MySqlCommand command = new MySqlCommand("SELECT users.user, users.password, roles.adminDasboardAccess, roles.sellerModeAccess, roles.viewModeAccess, roles.recordModeAcess FROM `users` INNER JOIN `roles` ON users.role = roles.role WHERE `user` = @uL AND `password` = @uP", db.getConnection());
             command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = Properties.Settings.Default.rememberUser;
             command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = Properties.Settings.Default.rememberPassword;
 
             adapter.SelectCommand = command;
             adapter.Fill(table);
 
-            if (table.Rows.Count > 0)
-                if(table.Rows[0][3].ToString() == "admin")
-                    check = true;
-
-            return check;
+            if (table.Rows.Count == 1)
+            {
+                if (table.Rows[0][2].ToString() == "True")
+                    adminDashboard.Visibility = Visibility.Visible;
+                if(table.Rows[0][3].ToString() == "True")
+                    sellerMode.Visibility = Visibility.Visible;
+                if (table.Rows[0][4].ToString() == "True")
+                    viewMode.Visibility = Visibility.Visible;
+                if (table.Rows[0][5].ToString() == "True")
+                    recordMode.Visibility = Visibility.Visible;
+                if (table.Rows[0][2].ToString() == "False" && table.Rows[0][3].ToString() == "False" && table.Rows[0][4].ToString() == "False" && table.Rows[0][5].ToString() == "False")
+                    MessageBox.Show("У вас нет доступа ко всем разделам. \nОбратитесь к администратору для выдачи доступа.");
+            }
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)
