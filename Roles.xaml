@@ -1,0 +1,34 @@
+﻿<Window x:Class="goods_counting.Roles"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:goods_counting"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Учёт товаров" Height="650" MinHeight="650" Width="800" MinWidth="800" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
+        <Border MinWidth="500" Margin="30" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="900" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="25" Color="#FFEDEDED" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel>
+                <Grid Margin="0 0 0 30">
+                    <TextBlock Text="Роли" FontSize="30" FontWeight="Medium"/>
+                    <Button Name="Back" Content="Назад" HorizontalAlignment="Right" Click="Back_Click" Style="{StaticResource MaterialDesignOutlinedButton}"/>
+                </Grid>
+                <Grid>
+                    <TextBox Name="newRole" materialDesign:HintAssist.Hint="Роль" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" Width="150" />
+                    <CheckBox Name="adminAccess" Margin="170 0 0 20" Content="Администратор" Cursor="Hand" HorizontalAlignment="Left"/>
+                    <CheckBox Name="sellerAccess" Margin="170 20 0 0" Content="Продавец" Cursor="Hand" HorizontalAlignment="Left"/>
+                    <CheckBox Name="viewAccess" Margin="300 0 0 20" Content="Просмотр" Cursor="Hand" HorizontalAlignment="Left"/>
+                    <CheckBox Name="addAccess" Margin="300 20 0 0" Content="Добавление" Cursor="Hand" HorizontalAlignment="Left"/>
+                    <Button Name="add" Content="Добавить" HorizontalAlignment="Left" Margin="420 0 0 0" Click="add_Click" Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
+                </Grid>
+                <DataGrid  Name="rolesDG" MaxHeight="200"/>
+                <Button Name="saveChanges" Content="Сохранить роль" Margin="40 30 40 0" Click="saveChanges_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
+                <Button Name="remove" Content="Удалить роль"  Margin="40 20 40 0" Click="remove_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

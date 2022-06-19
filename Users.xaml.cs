@@ -24,6 +24,7 @@ namespace goods_counting
         public Users()
         {
             InitializeComponent();
+            search_Click(null, null);
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
@@ -93,7 +94,7 @@ namespace goods_counting
             db.openConnection();
             if (command.ExecuteNonQuery() == 1)
             {
-                MessageBox.Show("Запись изменена!");
+                MessageBox.Show("Пользователь изменен!");
             }
             else
                 MessageBox.Show("Ошибка");
@@ -123,7 +124,7 @@ namespace goods_counting
             db.openConnection();
             if (command.ExecuteNonQuery() == 1)
             {
-                MessageBox.Show("Запись удалена!");
+                MessageBox.Show("Пользователь удален!");
             }
             else
                 MessageBox.Show("Ошибка");

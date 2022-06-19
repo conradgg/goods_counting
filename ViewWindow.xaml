@@ -1,0 +1,27 @@
+﻿<Window x:Class="goods_counting.ViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:goods_counting"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Учёт товаров" Height="650" MinHeight="650" Width="750" MinWidth="750" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
+        <Border MinWidth="500" Margin="30" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="900" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="25" Color="#FFEDEDED" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel>
+                <Grid Margin="0 0 0 30">
+                    <TextBlock Text="Режим просмотра" FontSize="30" FontWeight="Medium"/>
+                    <Button Name="back" Content="Назад" HorizontalAlignment="Right" Click="back_Click" Style="{StaticResource MaterialDesignOutlinedButton}"/>
+                </Grid>
+                <Grid>
+                    <Button Name="refresh" Content="Обновить" Margin="0 0 0 5" HorizontalAlignment="Left" Click="refresh_Click"/>
+                </Grid>
+                <DataGrid  Name="goodsDG" MaxHeight="400" IsReadOnly="True"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

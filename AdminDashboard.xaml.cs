@@ -41,7 +41,9 @@ namespace goods_counting
 
         private void roles_Click(object sender, RoutedEventArgs e)
         {
-
+            Roles rolesWindow = new Roles();
+            rolesWindow.Show();
+            Close();
         }
     }
 }

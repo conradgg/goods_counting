@@ -72,12 +72,16 @@ namespace goods_counting
 
         private void viewMode_Click(object sender, RoutedEventArgs e)
         {
-
+            ViewWindow viewWindow = new ViewWindow();
+            viewWindow.Show();
+            Close();
         }
 
         private void sellerMode_Click(object sender, RoutedEventArgs e)
         {
-
+            SellerWindow sellerWindow = new SellerWindow();
+            sellerWindow.Show();
+            Close();
         }
     }
 }

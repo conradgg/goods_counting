@@ -150,8 +150,17 @@
     <Compile Include="RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Roles.xaml.cs">
+      <DependentUpon>Roles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SellerWindow.xaml.cs">
+      <DependentUpon>SellerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewWindow.xaml.cs">
+      <DependentUpon>ViewWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="AdminDashboard.xaml">
       <SubType>Designer</SubType>
@@ -177,7 +186,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Roles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SellerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
