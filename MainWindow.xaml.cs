@@ -67,7 +67,9 @@ namespace goods_counting
 
         private void recordMode_Click(object sender, RoutedEventArgs e)
         {
-
+            RecordWindow recordWindow = new RecordWindow();
+            recordWindow.Show();
+            Close();
         }
 
         private void viewMode_Click(object sender, RoutedEventArgs e)

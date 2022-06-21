@@ -21,7 +21,7 @@
                 <Label Name="userName" Content="Имя пользователя: "  Margin="0 0 0 30"/>
                 <Button Name="sellerMode"  Content="Режим продавца" Margin="40 0 40 0" Visibility="Hidden" Click="sellerMode_Click"  Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
                 <Button Name="viewMode" Content="Режим просмотра товаров" Margin="40 20 40 0" Visibility="Hidden" Click="viewMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
-                <Button Name="recordMode" Content="Режим записи товаров" Margin="40 20 40 0" Visibility="Hidden" Click="recordMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="recordMode" Content="Режим записи товаров" Margin="40 20 40 0" Visibility="Hidden" Click="recordMode_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
             </StackPanel>
         </Border>
     </Grid> 
