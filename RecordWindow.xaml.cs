@@ -1,26 +1,13 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace goods_counting
 {
-    /// <summary>
-    /// Логика взаимодействия для RecordWindow.xaml
-    /// </summary>
     public partial class RecordWindow : Window
     {
+        DbGoods dbGoods = new DbGoods();
+
         public RecordWindow()
         {
             InitializeComponent();
@@ -29,106 +16,47 @@ namespace goods_counting
 
         public void getData()
         {
-            DB db = new DB();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `goods`", db.getConnection());
-
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-
-            goodsDG.ItemsSource = table.DefaultView;
+            List<Item> items = dbGoods.getGoods();
+            goodsDG.DataContext = items;
         }
 
         private void add_Click(object sender, RoutedEventArgs e)
         {
             if (name.Text == "")
-                MessageBox.Show("Введите название товара!");
+                snackbar.MessageQueue.Enqueue("Введите название товара!");
             else if (count.Text == "")
-                MessageBox.Show("Введите количество товара!");
+                snackbar.MessageQueue.Enqueue("Введите количество товара!");
             else if (count.Text.Contains(".") && count.Text.Contains(","))
-                MessageBox.Show("Количество товара может быть только целым числом!");
+                snackbar.MessageQueue.Enqueue("Количество товара может быть только целым числом!");
             else if (Int32.Parse(count.Text) < 0)
-                MessageBox.Show("Количество товара не может быть отрицательным!");
+                snackbar.MessageQueue.Enqueue("Количество товара не может быть отрицательным!");
             else if (price.Text == "")
-                MessageBox.Show("Введите цену!");
-            else if (price.Text.Contains("."))
-                MessageBox.Show("Необходимо использовать запятую, вместо точки!");
+                snackbar.MessageQueue.Enqueue("Введите цену!");
             else if (float.Parse(price.Text) < 0)
-                MessageBox.Show("Цена не может быть отрицательной!");
+                snackbar.MessageQueue.Enqueue("Цена не может быть отрицательной!");
             else
             {
-                DB db = new DB();
-
-                DataTable table = new DataTable();
-
-                MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-                MySqlCommand command = new MySqlCommand("insert into `goods` values (null, @nM, @cT, @pE)", db.getConnection());
-                command.Parameters.Add("@nM", MySqlDbType.VarChar).Value = name.Text.ToString();
-                command.Parameters.Add("@cT", MySqlDbType.VarChar).Value = Int32.Parse(count.Text);
-                command.Parameters.Add("@pE", MySqlDbType.VarChar).Value = float.Parse(price.Text).ToString("0.00", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
-
-                adapter.SelectCommand = command;
-                adapter.Fill(table);
-
-                if (table.Rows.Count > 0)
-                    MessageBox.Show("Ошибка!");
-                else
+                var newItem = new Item
                 {
-                    MessageBox.Show("Успешно!");
-                    name.Text = "";
-                    count.Text = "";
-                    price.Text = "";
-                }
+                    type = name.Text.ToString(),
+                    count = Convert.ToInt32(count.Text),
+                    price = decimal.Parse(price.Text)
+                };
+                dbGoods.addGoods(newItem);
+                snackbar.MessageQueue.Enqueue("Товар добавлен!");
                 getData();
             }
         }
 
         private void edit_Click(object sender, RoutedEventArgs e)
         {
-            var cellInfos = goodsDG.SelectedCells;
-            var line = new List<string>();
-            foreach (DataGridCellInfo cellInfo in cellInfos)
-            {
-                if (cellInfo.IsValid)
-                {
-                    var content = cellInfo.Column.GetCellContent(cellInfo.Item);
-                    var row = (DataRowView)content.DataContext;
-                    object[] obj = row.Row.ItemArray;
-                    line.Add(obj[0].ToString());
-                    line.Add(obj[1].ToString());
-                    line.Add(obj[2].ToString());
-                    line.Add(obj[3].ToString());
-                }
-            }
-            string selectedid = line[0].ToString();
-            string type = line[1].ToString();
-            int count = Int32.Parse(line[2]);
-            if (line[3].Contains("."))
-                MessageBox.Show("Необходимо использовать запятую, вместо точки!");
+            Item selectedRow = goodsDG.SelectedItem as Item;
+            if (selectedRow == null)
+                snackbar.MessageQueue.Enqueue("Вы не выбрали товар!");
             else
             {
-                var Price = float.Parse(line[3]).ToString("0.00", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
-                DB db = new DB();
-
-                MySqlCommand command = new MySqlCommand("UPDATE `goods` SET `type` = @tP, `count` = @cT, `price` = @pE WHERE `id` = @id", db.getConnection());
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = selectedid;
-                command.Parameters.Add("@tP", MySqlDbType.VarChar).Value = type;
-                command.Parameters.Add("@cT", MySqlDbType.VarChar).Value = count;
-                command.Parameters.Add("@pE", MySqlDbType.VarChar).Value = Price;
-                db.openConnection();
-                if (command.ExecuteNonQuery() == 1)
-                {
-                    MessageBox.Show("Товар изменен!");
-                }
-                else
-                    MessageBox.Show("Ошибка");
-                db.closeConnection();
-                getData();
+                dbGoods.updateGoods(selectedRow);
+                snackbar.MessageQueue.Enqueue("Товар обновлен!");
             }
         }
 

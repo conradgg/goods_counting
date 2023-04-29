@@ -1,13 +1,7 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 
 namespace goods_counting
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -19,32 +13,19 @@ namespace goods_counting
 
         private void Access()
         {
-            DB db = new DB();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT users.user, users.password, roles.adminDasboardAccess, roles.sellerModeAccess, roles.viewModeAccess, roles.recordModeAcess FROM `users` INNER JOIN `roles` ON users.role = roles.role WHERE `user` = @uL AND `password` = @uP", db.getConnection());
-            command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = Properties.Settings.Default.rememberUser;
-            command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = Properties.Settings.Default.rememberPassword;
-
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-
-            if (table.Rows.Count == 1)
-            {
-                if (table.Rows[0][2].ToString() == "True")
-                    adminDashboard.Visibility = Visibility.Visible;
-                if(table.Rows[0][3].ToString() == "True")
-                    sellerMode.Visibility = Visibility.Visible;
-                if (table.Rows[0][4].ToString() == "True")
-                    viewMode.Visibility = Visibility.Visible;
-                if (table.Rows[0][5].ToString() == "True")
-                    recordMode.Visibility = Visibility.Visible;
-                if (table.Rows[0][2].ToString() == "False" && table.Rows[0][3].ToString() == "False" && table.Rows[0][4].ToString() == "False" && table.Rows[0][5].ToString() == "False")
-                    MessageBox.Show("У вас нет доступа ко всем разделам. \nОбратитесь к администратору для выдачи доступа.");
-            }
+            DbUsers dbUsers = new DbUsers();
+            var roles = dbUsers.getRoleInfo(dbUsers.getUserRole(Properties.Settings.Default.rememberUser));
+            Role userRoles = roles[0];
+            if (userRoles.adminDasboardAccess)
+                adminDashboard.Visibility = Visibility.Visible;
+            if (userRoles.sellerModeAccess)
+                sellerMode.Visibility = Visibility.Visible;
+            if (userRoles.viewModeAccess)
+                viewMode.Visibility = Visibility.Visible;
+            if (userRoles.recordModeAcess)
+                recordMode.Visibility = Visibility.Visible;
+            if (!userRoles.adminDasboardAccess && !userRoles.sellerModeAccess && !userRoles.viewModeAccess && !userRoles.recordModeAcess)
+                snackbar.MessageQueue.Enqueue("У вас нет доступа ко всем разделам. \nОбратитесь к администратору для выдачи доступа.");
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)

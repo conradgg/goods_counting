@@ -7,7 +7,6 @@ namespace goods_counting
 {
     internal class Encryption
     {
-        // AES 256 bits Encryption Library with Salt
         public string Encrypt(string input)
         {
             const String password = "LFS<keUa3qZAkew*4rYLqwjDr4NpDfm>!j*NYFnnNFdJr!u!KhSyhWRZzM>VL!Lt";

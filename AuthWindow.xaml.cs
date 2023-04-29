@@ -1,12 +1,13 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 
 namespace goods_counting
 {
     public partial class AuthWindow : Window
     {
+
+        DbUsers dbUsers = new DbUsers();
+        Encryption encryption = new Encryption();
+        
         public AuthWindow()
         {
             InitializeComponent();
@@ -18,20 +19,21 @@ namespace goods_counting
 
         private void authorize_Click(object sender, RoutedEventArgs e)
         {
-            Encryption encryption = new Encryption();
 
-            String login = user.Text;
-            String password = passwd.Password;
+            var needUser = new User
+            {
+                user = user.Text,
+                password = encryption.Encrypt(passwd.Password)
+            };
 
-            if (login == "" || password == "")
-                MessageBox.Show("Необходимо заполнить все поля");
+            if (user.Text == "" || passwd.Password == "")
+                snackbar.MessageQueue.Enqueue("Необходимо заполнить все поля");
             else
             {
-                password = encryption.Encrypt(password);
-                if (Authorize(login, password))
+                if (dbUsers.userAuth(needUser))
                 {
-                    Properties.Settings.Default.rememberUser = login;
-                    Properties.Settings.Default.rememberPassword = password;
+                    Properties.Settings.Default.rememberUser = needUser.user;
+                    Properties.Settings.Default.rememberPassword = needUser.password;
 
                     if (rememberPasswd.IsChecked == true)
                         Properties.Settings.Default.rememberAuth = true;
@@ -43,39 +45,19 @@ namespace goods_counting
                     Close();
                 }
                 else
-                    MessageBox.Show("Введен неверный логин или пароль");
+                    snackbar.MessageQueue.Enqueue("Введен неверный логин или пароль");
             }
-        }
-
-        private bool Authorize(string login, string password)
-        {
-            bool check =false;
-
-            DB db = new DB();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE `user` = @uL AND `password` = @uP", db.getConnection());
-            command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = login;
-            command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = password;
-
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-
-            if (table.Rows.Count > 0)
-                check = true;
-
-            return check;
         }
 
         private void getRememberLogin()
         {
-            String login = Properties.Settings.Default.rememberUser;
-            String password = Properties.Settings.Default.rememberPassword;
+            var needUser = new User
+            {
+                user = Properties.Settings.Default.rememberUser,
+                password = Properties.Settings.Default.rememberPassword
+            };
 
-            if (Authorize(login, password))
+            if (dbUsers.userAuth(needUser))
             {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
@@ -88,7 +70,7 @@ namespace goods_counting
                 Properties.Settings.Default.rememberPassword = null;
                 Properties.Settings.Default.Save();
 
-                MessageBox.Show("Данные авторизации устарели");
+                snackbar.MessageQueue.Enqueue("Данные авторизации устарели");
             }
         }
 

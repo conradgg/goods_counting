@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:goods_counting"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Учёт товаров" Height="650" MinHeight="650" Width="800" MinWidth="800" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
@@ -25,10 +24,19 @@
                     <CheckBox Name="addAccess" Margin="300 20 0 0" Content="Добавление" Cursor="Hand" HorizontalAlignment="Left"/>
                     <Button Name="add" Content="Добавить" HorizontalAlignment="Left" Margin="420 0 0 0" Click="add_Click" Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
                 </Grid>
-                <DataGrid  Name="rolesDG" MaxHeight="200"/>
+                <DataGrid  Name="rolesDG" MaxHeight="200" AutoGenerateColumns="False" ItemsSource="{Binding Role}" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Роль" Binding="{Binding role}" IsReadOnly="True" />
+                        <DataGridCheckBoxColumn Header="Администратор" Binding="{Binding adminDasboardAccess}" />
+                        <DataGridCheckBoxColumn Header="Продавец" Binding="{Binding sellerModeAccess}" />
+                        <DataGridCheckBoxColumn Header="Просмотр" Binding="{Binding viewModeAccess}" />
+                        <DataGridCheckBoxColumn Header="Запись" Binding="{Binding recordModeAcess}" />
+                    </DataGrid.Columns>
+                </DataGrid>
                 <Button Name="saveChanges" Content="Сохранить роль" Margin="40 30 40 0" Click="saveChanges_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
                 <Button Name="remove" Content="Удалить роль"  Margin="40 20 40 0" Click="remove_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
             </StackPanel>
         </Border>
+        <materialDesign:Snackbar x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" Margin="0 0 0 10" />
     </Grid>
 </Window>

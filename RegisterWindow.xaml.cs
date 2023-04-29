@@ -1,6 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Data;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -8,6 +7,9 @@ namespace goods_counting
 {
     public partial class RegisterWindow : Window
     {
+        DbUsers dbUsers = new DbUsers();
+        Encryption encryption = new Encryption();
+
         public RegisterWindow()
         {
             InitializeComponent();
@@ -16,68 +18,37 @@ namespace goods_counting
 
         private void register_Click(object sender, RoutedEventArgs e)
         {
-            String login = user.Text;
-            String password = passwd.Password;
-
-            if (login == "" || password == "")
-                MessageBox.Show("Необходимо заполнить все поля");
-            else if (login.Length < 4)
-                MessageBox.Show("Имя пользователя должно быть не менее 4 символов");
-            else if (!userCheck(login))
-                MessageBox.Show("Такое имя пользователя уже существует");
-            else if (password != passwd_2.Password)
-                MessageBox.Show("Пароли не совпадают");
-            else if (password.Length < 8)
-                MessageBox.Show("Длинна пароля должна быть не менее 8 символов");
-            else
-                Register(login, password);
-        }
-
-        private void Register(string login, string password)
-        {
-            Encryption encryption = new Encryption();
-
-            DB db = new DB();
-
-            MySqlCommand command = new MySqlCommand("INSERT INTO `users` (user, password, role) values (@uL, @uP, 'user')", db.getConnection());
-            command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = login;
-            command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = encryption.Encrypt(password);
-
-            db.openConnection();
-
-            if (command.ExecuteNonQuery() == 1)
+            var newUser = new User
             {
-                MessageBox.Show("Регистация прошла успешно!");
-                AuthWindow authWindow = new AuthWindow();
-                authWindow.Show();
-                Close();
-            }
-            else
-                MessageBox.Show("Ошибка");
+                user = user.Text,
+                password = encryption.Encrypt(passwd.Password),
+                role = "user"
+            };
 
-            db.closeConnection();
+            if (user.Text == "" || passwd.Password == "")
+                snackbar.MessageQueue.Enqueue("Необходимо заполнить все поля");
+            else if (user.Text.Length < 4)
+                snackbar.MessageQueue.Enqueue("Имя пользователя должно быть не менее 4 символов");
+            else if (dbUsers.userExist(user.Text))
+                snackbar.MessageQueue.Enqueue("Такое имя пользователя уже существует");
+            else if (passwd.Password != passwd_2.Password)
+                snackbar.MessageQueue.Enqueue("Пароли не совпадают");
+            else if (passwd.Password.Length < 8)
+                snackbar.MessageQueue.Enqueue("Длинна пароля должна быть не менее 8 символов");
+            else
+            {
+                dbUsers.userRegister(newUser);
+                snackbar.MessageQueue.Enqueue("Регистация прошла успешно!\nПеренаправление на авторизацию");
+                DelayedExecution();
+            }
         }
 
-        private bool userCheck(string login)
+        async void DelayedExecution()
         {
-            bool check = true;
-
-            DB db = new DB();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE `user` = @uL", db.getConnection());
-            command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = login;
-
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-
-            if (table.Rows.Count > 0)
-                check = false;
-
-            return check;
+            await Task.Delay(2000);
+            AuthWindow authWindow = new AuthWindow();
+            authWindow.Show();
+            Close();
         }
 
         private void authozire_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

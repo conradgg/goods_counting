@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:goods_counting"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Учёт товаров" Height="650" MinHeight="650" Width="700" MinWidth="700" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
@@ -18,14 +17,20 @@
                     <Button Name="Back" Content="Назад" HorizontalAlignment="Right" Click="Back_Click" Style="{StaticResource MaterialDesignOutlinedButton}"/>
                 </Grid>
                 <Grid>
-                    <TextBox Name="user" materialDesign:HintAssist.Hint="Пользователь" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" Width="150" />
-                    <TextBox Name="role" Margin="170 0 0 10" HorizontalAlignment="Left" Width="150" materialDesign:HintAssist.Hint="Роль" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-                    <Button Name="search" Content="Найти" HorizontalAlignment="Left" Margin="350 0 0 0" Click="search_Click" IsDefault="True" Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
+                    <TextBox Name="needUser" materialDesign:HintAssist.Hint="Пользователь" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" Width="150" TextChanged="search_TextChanged" />
+                    <TextBox Name="role" Margin="170 0 0 10" HorizontalAlignment="Left" Width="150" materialDesign:HintAssist.Hint="Роль" Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="search_TextChanged"/>
                 </Grid>
-                <DataGrid  Name="usersDG" MaxHeight="200" />
+                <DataGrid x:Name="usersDG" MaxHeight="200" AutoGenerateColumns="False" ItemsSource="{Binding User}" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding id}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Имя пользователя" Binding="{Binding user}" />
+                        <DataGridTextColumn Header="Роль" Binding="{Binding role}" />
+                    </DataGrid.Columns>
+                </DataGrid>
                 <Button Name="saveChanges" Content="Сохранить запись" Margin="40 30 40 0" Click="saveChanges_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
                 <Button Name="remove" Content="Удалить запись"  Margin="40 20 40 0" Click="remove_Click" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
             </StackPanel>
         </Border>
+        <materialDesign:Snackbar x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" Margin="0 0 0 10" />
     </Grid>
 </Window>

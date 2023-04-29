@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:goods_counting"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Учёт товаров" Height="500" MinHeight="500" Width="450" MinWidth="450" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
@@ -21,5 +20,6 @@
                 <Label Name="authozire" Content="Вход" Cursor="Hand" MouseLeftButtonDown="authozire_MouseLeftButtonDown" HorizontalAlignment="Center" FontSize="11" FontStyle="Italic"/>
             </StackPanel>
         </Border>
+        <materialDesign:Snackbar x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" Margin="0 0 0 10" />
     </Grid>
 </Window>

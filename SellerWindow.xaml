@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:goods_counting"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Учёт товаров" Height="650" MinHeight="650" Width="750" MinWidth="750" FontFamily="{materialDesign:MaterialDesignFont}" WindowStartupLocation="CenterScreen">
@@ -18,14 +17,24 @@
                     <Button Name="back" Content="Назад" HorizontalAlignment="Right" Click="back_Click" Style="{StaticResource MaterialDesignOutlinedButton}"/>
                 </Grid>
                 <Grid>
-                    <TextBox Name="count" materialDesign:HintAssist.Hint="Количество" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" Width="100" />
-                    <Button Name="sell" Content="Продать" HorizontalAlignment="Left" Margin="125 0 0 0" Click="sell_Click" Style="{StaticResource MaterialDesignOutlinedButton}" Cursor="Hand"/>
-                    <Button Name="restore" Content="Вернуть" HorizontalAlignment="Left" Click="restore_Click" Margin="225 0 0 0" Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
+                    <TextBox Name="needName" materialDesign:HintAssist.Hint="Название" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" Width="175" TextChanged="needName_TextChanged"/>
                     <Button Name="refresh" Content="Обновить" HorizontalAlignment="Right" Click="refresh_Click"/>
-
                 </Grid>
-                <DataGrid  Name="goodsDG" MaxHeight="400" IsReadOnly="True"/>
+                <DataGrid x:Name="goodsDG" MaxHeight="400" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Item}" CanUserAddRows="False" Margin="0 5 0 10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding id}" />
+                        <DataGridTextColumn Header="Название" Binding="{Binding type}" />
+                        <DataGridTextColumn Header="Количество" Binding="{Binding count}" />
+                        <DataGridTextColumn Header="Цена" Binding="{Binding price}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid>
+                    <TextBox Name="count" materialDesign:HintAssist.Hint="Количество" Margin="0 0 0 10" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" Width="100" PreviewTextInput="count_PreviewTextInput" TextChanged="count_TextChanged"/>
+                    <Button Name="sell" Content="Продать" HorizontalAlignment="Left" Margin="125 0 0 0" Click="sell_Click" Style="{StaticResource MaterialDesignOutlinedButton}" Cursor="Hand"/>
+                    <Button Name="restore" Content="Вернуть" HorizontalAlignment="Left" Click="refund_Click" Margin="225 0 0 0" Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"/>
+                </Grid>
             </StackPanel>
         </Border>
+        <materialDesign:Snackbar x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" Margin="0 0 0 10" />
     </Grid>
 </Window>

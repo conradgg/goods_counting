@@ -21,5 +21,6 @@
                 <Label Name="register" Content="Регистрация" Cursor="Hand" HorizontalAlignment="Center" MouseLeftButtonDown="register_MouseLeftButtonDown" FontSize="11" FontStyle="Italic"/>
             </StackPanel>
         </Border>
+        <materialDesign:Snackbar x:Name="snackbar" MessageQueue="{materialDesign:MessageQueue}" Margin="0 0 0 10" />
     </Grid>
 </Window>

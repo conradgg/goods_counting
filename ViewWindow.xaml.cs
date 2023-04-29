@@ -1,26 +1,16 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace goods_counting
 {
-    /// <summary>
-    /// Логика взаимодействия для ViewWindow.xaml
-    /// </summary>
     public partial class ViewWindow : Window
     {
+        DbGoods dbGoods = new DbGoods();
+        List<Item> items;
+
         public ViewWindow()
         {
             InitializeComponent();
@@ -29,18 +19,17 @@ namespace goods_counting
 
         public void getData()
         {
-            DB db = new DB();
+            needName.Text = string.Empty;
+            items = dbGoods.getGoods();
+            goodsDG.DataContext = items;
+        }
 
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `goods`", db.getConnection());
-
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-
-            goodsDG.ItemsSource = table.DefaultView;
+        private void needName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            List<Item> filteredList = items
+                .Where(user => user.type.ToLower().Contains(needName.Text.ToLower()))
+                .ToList();
+            goodsDG.ItemsSource = filteredList;
         }
 
         private void refresh_Click(object sender, RoutedEventArgs e)

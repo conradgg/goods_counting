@@ -1,26 +1,17 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace goods_counting
 {
-    /// <summary>
-    /// Логика взаимодействия для SellerWindow.xaml
-    /// </summary>
     public partial class SellerWindow : Window
     {
+        DbGoods dbGoods = new DbGoods();
+        List<Item> items;
+
         public SellerWindow()
         {
             InitializeComponent();
@@ -29,72 +20,35 @@ namespace goods_counting
 
         public void getData()
         {
-            DB db = new DB();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `goods`", db.getConnection());
-
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-
-            goodsDG.ItemsSource = table.DefaultView;
+            needName.Text = string.Empty;
+            items = dbGoods.getGoods();
+            goodsDG.ItemsSource = items;
         }
 
         private void sell_Click(object sender, RoutedEventArgs e)
         {
-            if (goodsDG.SelectedItem != null)
-            {
-                if (count.Text != "")
-                {
-                    int COUNT = Convert.ToInt32(count.Text);
-                    var cellInfos = goodsDG.SelectedCells;
-                    var line = new List<string>();
-                    foreach (DataGridCellInfo cellInfo in cellInfos)
-                    {
-                        if (cellInfo.IsValid)
-                        {
-                            var content = cellInfo.Column.GetCellContent(cellInfo.Item);
-                            var row = (DataRowView)content.DataContext;
-                            object[] obj = row.Row.ItemArray;
-                            line.Add(obj[0].ToString());
-                            line.Add(obj[2].ToString());
-                        }
-                    }
-                    string id = line[0].ToString();
-                    int Count = Int32.Parse(line[1]) - COUNT;
-                    if (Count >= 0)
-                        Update(id, Count);
-                    else
-                        MessageBox.Show("Недостаточно товара!");
-                }
-                else
-                    MessageBox.Show("Введите количество!");
-            }
+            Item selectedRow = goodsDG.SelectedItem as Item;
+            if (selectedRow == null)
+                snackbar.MessageQueue.Enqueue("Вы не выбрали товар!");
+            else if (count.Text.Length == 0)
+                snackbar.MessageQueue.Enqueue("Вы не ввели количество!");
+            else if (selectedRow.count - Convert.ToInt32(count.Text) < 0)
+                snackbar.MessageQueue.Enqueue("Вы пытаетесь продать больше, чем есть в наличии!");
             else
-                MessageBox.Show("Товар не выбран!");
+            {
+                selectedRow.count -= Convert.ToInt32(count.Text);
+                goodsDG.Items.Refresh();
+                dbGoods.updateGoods(selectedRow);
+                snackbar.MessageQueue.Enqueue("Вы продали товар!");
+            }
         }
 
-        public void Update(string id, int Count)
+        private void needName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            DB db = new DB();
-
-            MySqlCommand command = new MySqlCommand("UPDATE `goods` SET `count` = @cT WHERE `id` = @id", db.getConnection());
-            command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
-            command.Parameters.Add("@cT", MySqlDbType.VarChar).Value = Count;
-
-            db.openConnection();
-            if (command.ExecuteNonQuery() == 1)
-            {
-                MessageBox.Show("Успешно!");
-            }
-            else
-                MessageBox.Show("Ошибка");
-            db.closeConnection();
-            getData();
-
+            List<Item> filteredList = items
+                .Where(user => user.type.ToLower().Contains(needName.Text.ToLower()))
+                .ToList();
+            goodsDG.ItemsSource = filteredList;
         }
 
         private void back_Click(object sender, RoutedEventArgs e)
@@ -109,38 +63,41 @@ namespace goods_counting
             getData();
         }
 
-        private void restore_Click(object sender, RoutedEventArgs e)
+        private void refund_Click(object sender, RoutedEventArgs e)
         {
-            if (goodsDG.SelectedItem != null)
-            {
-                if (count.Text != "")
-                {
-                    int COUNT = Convert.ToInt32(count.Text);
-                    var cellInfos = goodsDG.SelectedCells;
-                    var line = new List<string>();
-                    foreach (DataGridCellInfo cellInfo in cellInfos)
-                    {
-                        if (cellInfo.IsValid)
-                        {
-                            var content = cellInfo.Column.GetCellContent(cellInfo.Item);
-                            var row = (DataRowView)content.DataContext;
-                            object[] obj = row.Row.ItemArray;
-                            line.Add(obj[0].ToString());
-                            line.Add(obj[2].ToString());
-                        }
-                    }
-                    string id = line[0].ToString();
-                    int Count = Int32.Parse(line[1]) + COUNT;
-                    if (Count >= 0)
-                        Update(id, Count);
-                    else
-                        MessageBox.Show("Недостаточно товара!");
-                }
-                else
-                    MessageBox.Show("Введите количество!");
-            }
+            Item selectedRow = goodsDG.SelectedItem as Item;
+            if (selectedRow == null)
+                snackbar.MessageQueue.Enqueue("Вы не выбрали товар!");
+            else if (count.Text.Length == 0)
+                snackbar.MessageQueue.Enqueue("Вы не ввели количество!");
             else
-                MessageBox.Show("Товар не выбран!");
+            {
+                selectedRow.count += Convert.ToInt32(count.Text);
+                goodsDG.Items.Refresh();
+                dbGoods.updateGoods(selectedRow);
+                snackbar.MessageQueue.Enqueue("Вы вернули товар!");
+            }
+        }
+
+        private void count_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!int.TryParse(e.Text, out int _))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void count_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox count = (TextBox)sender;
+
+            if (!string.IsNullOrEmpty(count.Text) && int.TryParse(count.Text, out int value))
+            {
+                if (value < 1 || value > 1000)
+                {
+                    count.Text = "";
+                }
+            }
         }
     }
 }
