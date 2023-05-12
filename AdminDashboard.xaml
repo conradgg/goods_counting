@@ -20,6 +20,7 @@
                 <Label Name="userName" Content="Имя пользователя: " Margin="0 0 0 30"/>
                 <Button Name="users" Content="Пользователи" Click="users_Click" Margin="40 0 40 0" Style="{StaticResource MaterialDesignFlatAccentBgButton}" Cursor="Hand"/>
                 <Button Name="roles"  Content="Роли" Click="roles_Click" Margin="40 20 40 0" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
+                <Button Name="stats"  Content="Статистика по продажам" Click="stats_Click" Margin="40 20 40 0" Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
             </StackPanel>
         </Border>
     </Grid>

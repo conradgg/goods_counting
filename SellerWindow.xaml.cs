@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -37,6 +38,13 @@ namespace goods_counting
             else
             {
                 selectedRow.count -= Convert.ToInt32(count.Text);
+                Sell sellItem = new Sell
+                {
+                    product = selectedRow.type,
+                    count = Convert.ToInt32(count.Text),
+                    price = selectedRow.price,
+                };
+                dbGoods.addSell(sellItem);
                 goodsDG.Items.Refresh();
                 dbGoods.updateGoods(selectedRow);
                 snackbar.MessageQueue.Enqueue("Вы продали товар!");
